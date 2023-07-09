@@ -5,7 +5,7 @@ from pydantic import BaseModel
 from sqlalchemy import insert, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from src.operations.models import message as Messages
+from src.models import Message as Messages
 from src.chat.schemas import MessagesModel
 from src.database import async_session_maker, get_async_session
 

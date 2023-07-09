@@ -66,14 +66,11 @@ body {
 
     </style>
 
-
-    <!-- Custom styles for this template -->
-
 </head>
 <body class="text-center">
 
 <main class="form-signin">
-    <form action="http://127.0.0.1:8000/auth/jwt/login" method="POST" id="" name="form">
+    <form id="form" onsubmit="return false;"> <!-- action="http://127.0.0.1:8000/auth/jwt/login" method="POST" -->
         <h1 class="h3 mb-3 fw-normal">Войти</h1>
 
         <div class="form-floating">
@@ -90,30 +87,52 @@ body {
                 <input type="checkbox" value="remember-me"> Запомни меня
             </label>
         </div>
-        <button class="w-100 btn btn-lg btn-primary" type="submit">Войти</button>
-        <p class="mt-5 mb-3 text-muted">&copy; 2017–2021</p>
+        <button class="w-100 btn btn-lg btn-primary" id='btn_submit' type="submit">Войти</button>
+        <p class="mt-5 mb-3 text-muted">&copy; 2023</p>
     </form>
 </main>
 
 
 </body>
-
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function() {
+console.log('hello world')
         const form = document.getElementById('form');
+        // const formDate = new FormData(form);
 
-        document.form.addEventListener('submit', function(event) {
+
+        document.getElementById('btn_submit').addEventListener("click", function(event) {
             event.preventDefault(); // Prevent the form from submitting normally
+
+            const formDate = new FormData(form);
+            username = document.getElementById('floatingInput').value.toLowerCase()
+            password  = document.getElementById('floatingPassword').value
+
+            data = {
+                'username':username,
+                'password':password
+            }
+
+            console.log(data)
+            console.log(formDate)
 
             fetch('http://127.0.0.1:8000/auth/jwt/login', {
                 method: 'POST',
-                body: form
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
             })
             .then(function(response) {
-                console.log('total sussssceee')
+                console.log('sussssceee')
+                console.log(JSON.stringify(data))
+
                 if (response.status === 204) {
-                    window.location.href = 'http://example.com/success'; // Redirect to success page
+                    window.location.href = 'http://localhost:8000/docs'; // Redirect to success page
                 } else {
+                    console.log('total error', response.status)
+                    console.log(formDate)
+                    console.log(JSON.stringify(data))
                     // Handle other response statuses or errors
                 }
             })
@@ -122,7 +141,8 @@ body {
             });
         });
     });
-</script>
+
 
 </script>
+
 </html>

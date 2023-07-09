@@ -1,12 +1,34 @@
 from datetime import datetime
 
 from fastapi_users_db_sqlalchemy import SQLAlchemyBaseUserTable
-from sqlalchemy import MetaData, Table, Column, Integer, String, TIMESTAMP, ForeignKey, Boolean
-
-# from src.database import Base
+from sqlalchemy import MetaData, Column, Integer, String, TIMESTAMP, ForeignKey, Boolean
 from src.database import Base
 
 metadata = MetaData()
+
+class Client(SQLAlchemyBaseUserTable[int], Base):
+    __tablename__ = "client"
+
+    id = Column(Integer, primary_key=True)
+    email = Column(String, nullable=False)
+    username = Column(String, nullable=False)
+    registered_at = Column(TIMESTAMP, default=datetime.utcnow)
+    hashed_password: str = Column(String(length=1024), nullable=False)
+    is_active: bool = Column(Boolean, default=True, nullable=False)
+    is_superuser: bool = Column(Boolean, default=False, nullable=False)
+    is_verified: bool = Column(Boolean, default=False, nullable=False)
+
+
+class Message(Base):
+    __tablename__ = "message"
+    # __table_args__ = {'extend_existing': True, 'schema': 'public'}
+
+    id = Column(Integer, primary_key=True)
+    name = Column(String, nullable=False)
+    dt = Column(TIMESTAMP, default=datetime.utcnow())
+    id_user = Column(Integer, ForeignKey(Client.id))
+
+
 
 
 # class User(Base, SQLAlchemyBaseUserTable):

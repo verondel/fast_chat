@@ -4,8 +4,8 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 # from src.auth.base_config import current_user
 from src.database import get_async_session
-from src.database import Client  # ???????????
-from src.operations.models import message
+from src.models import Client  # ???????????
+# from src.models import Message
 from src.operations.schemas import MessageCreate
 
 router = APIRouter(
